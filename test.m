@@ -20,16 +20,17 @@ fprintf('the values of the tone map: a = %f, b = %f\n',a,b);
 fprintf('display tone mapping\n');
 %%using SLTmap to create the tone map
 [nim,TM] = SLTmap(darkim,ndarkim);
+figure;
 plot(0:255,TM, 'rx');
-    title('Tone mapping');
-    xlabel('original image color');
-    ylabel('enhanced contrast image color');
+title('Tone mapping');
+xlabel('original image color');
+ylabel('enhanced contrast image color');
 mypause;
 close all;
 %%
 %%using contrastEnhance on fourSqaures.tif
 fprintf('-----------------\n');
-fprintf('test B. maximizing contrast of elready fully enhance\n');
+fprintf('test B. maximizing contrast of already fully enhance\n');
 fprintf('reading fourSqaures.tif which is already an enhanced image\ntrying to enhance fourSqaures.tif\n');
 fsq = readImage('fourSquares.tif');
 [fsq1,a,b] = contrastEnhance(fsq,[0,255]);
@@ -55,7 +56,11 @@ for i=1:range
     [nim,a,b] = contrastEnhance(darkim,[minVal,minVal + i]);
     Y(i) = round(Minkowski2Dist(darkim,nim)*100);
 end
+figure;
 plot(X,Y);
+title('Minkowski distance between image and decreased image');
+xlabel('max right range');
+ylabel('Minkowski2Dist*100');
 mypause;
 close all;
 
@@ -74,7 +79,7 @@ mypause;
 %%
 fprintf('-----------------\n');
 fprintf('test E. sliceMat(im) * TM produces a tone mapped version of im\n');
-fprintf('use darkimage and contrast darkimage\n');
+fprintf('use darkimage and contrasted darkimage\n');
 %%find the tone map 
 [nim,TM] = SLTmap(darkim,ndarkim);
 SL = sliceMat(darkim);
@@ -119,7 +124,6 @@ mypause;
 fprintf('Displaying im2 \n');
 showImage(darkim);
 mypause;
-clear all;
 fprintf('test H.2 meanSqrDist distance between SLTmap(im1,im2) and im2 is smaller than the\n');
 fprintf(' distance between im1 and im2\n');
 dist1 = MeanSqrDist(lena,nim);
